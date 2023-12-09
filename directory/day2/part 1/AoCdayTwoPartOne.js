@@ -68,18 +68,16 @@ readStream.on('line', async (line) => {
 readStream.on('close', async () => {
     // Wacht tot alle regels zijn verwerkt
     if (!allLinesProcessed) {
-        // Wacht even om eventuele vertraagde verwerking te voltooien
+        // Wacht even om vertraagde verwerking te voltooien
         await new Promise(resolve => setTimeout(resolve, 100));
     }
 
     try {
-        // Filter out null or undefined values
         const filteredResultsArray = possibleGamesId.filter(value => value !== null && value !== undefined);
 
         const combinedResultsArray = await Promise.all(filteredResultsArray);
         console.log(combinedResultsArray)
 
-        // Calculate the sum of the combined results
         const sum = combinedResultsArray.reduce((acc, value) => acc + Number(value), 0);
         console.log('Sum of combined results:', sum);
     } catch (error) {
@@ -91,7 +89,6 @@ readStream.on('error', (err) => {
     console.error('Error:', err);
 });
 
-// Markeer dat alle regels zijn verwerkt wanneer de 'close'-callback wordt bereikt
 readStream.on('close', () => {
     allLinesProcessed = true;
 });
